@@ -2,7 +2,7 @@ name: Update Skills
 
 on:
   workflow_dispatch:
-  # Schedule is disabled for now
+  # TODO(JoseAlcerreca): enable schedule when ready
   # schedule:
   #   - cron: '0 * * * *' # Runs at minute 0 of every hour
 
@@ -17,6 +17,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
+          token: ${{ secrets.ADR_GITHUB_BOT_PAT }}
 
       - name: Delete existing non-hidden directories
         run: |
@@ -41,9 +42,9 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "android-devrel-github-bot"
+          git config user.email "android-devrel-github-bot@users.noreply.github.com"
           git add -A
           # The '|| true' ensures the workflow doesn't fail if there's nothing new
           git commit -m "Updates skills ($(date +'%Y-%m-%d %H:%M'))" || echo "No changes to commit"
-          git push origin HEAD:main
+          git push origin main
